@@ -5,7 +5,7 @@ Main benefits compared to a vanilla Moq:
 2. It allows the expressions style setup of Mock.Of<>() to be applied several types on the same mock object, instead of only once on mock creation
 3. It serves as a repository of dependencies, you no longer need separate fields for each of them
 4. Cleaner usage, less clutter to make a test
-
+5. Supports some limited integrational testing
 
 ## Usage 
 Add the library to your test project. 
@@ -13,16 +13,17 @@ Follow this example to build a test.
 
 ```csharp
 // Example uses NUnit, but you can use anything instead
-public class MyServiceTests
+public class SimpleTestWithMocks
 {
     // Create a field for the suit instance. MyService should be the type you are testing
-    private static readonly TestSuit<MyService> _testSuit = TestSuit.Create<MyService>();
+    private static readonly ITestSuit<MyService> _testSuit = TestSuit.Create<MyService>();
 
     [TearDown]
     public void TearDown()
     {
         // You could create a new test suit for each test, but using Reset() after (or before) each test
-        // is more performant. Becomes meaningful when you have some hundreds of tests 
+        // is more performant. Becomes meaningful when you have some hundreds of tests.
+        // For xunit this should happen in the constructor of the test.
         _testSuit.Reset();
     }
 
@@ -34,10 +35,10 @@ public class MyServiceTests
         // Setup your dependencies here as you do in Mock.Of<>()
         // If you call something in the test which was not setup you will get exception
         // "invocation failed with mock behavior Strict".
-        _testSuit.Setup<IDependency1>(s => s.GetNumber() == "1" && s.SomethingElse == 2);
+        _testSuit.SetupMock<IDependency1>(s => s.GetNumber() == "1" && s.SomethingElse == 2);
 
         // You can also use the traditional Moq form to setup advanced behaviour and void methods
-        _testSuit.SetupAdv<IDependency2>(m =>
+        _testSuit.SetupMockAdv<IDependency2>(m =>
             m.Setup(d => d.Action2()).Callback(() => Console.WriteLine("Test")));
 
         // Act
@@ -49,5 +50,9 @@ public class MyServiceTests
         // Assert
         Assert.AreEqual(1, result);
     }
-}    
+}
 ```
+
+## Advanced usage
+Other capabilities support injecting custom mocks, real types and other test suit instances as dependencies. This can be used to implement limited integrational testing.
+Check out the tests to see how it's done.

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -8,7 +8,11 @@
     <PackageTags>moq tdd mocking mocks unittesting agile unittest</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Description>An opinionated helper adding syntaxic sugar around Moq library</Description>
-    <Version>1.1.0</Version>
+    <Version>2.0.0-beta07</Version>
+    <LangVersion>preview</LangVersion>
+    <NullableContextOptions>enable</NullableContextOptions>
+    <PackageReleaseNotes>Added ability to set dependencies as custom instances, mocks or other test suits. This can be used to implement limited integrational testing.</PackageReleaseNotes>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

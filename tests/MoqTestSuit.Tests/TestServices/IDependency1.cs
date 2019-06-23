@@ -1,4 +1,4 @@
-﻿namespace MoqTestSuit.Tests.Examples
+﻿namespace MoqTestSuit.Tests.TestServices
 {
     public interface IDependency1
     {

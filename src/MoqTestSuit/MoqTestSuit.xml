@@ -1,0 +1,212 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MoqTestSuit</name>
+    </assembly>
+    <members>
+        <member name="T:MoqTestSuit.DependencyContainer">
+            <summary>
+            Stores mocks as mocks, suits as suits and real dependencies as is
+            </summary>
+        </member>
+        <member name="T:MoqTestSuit.ITestSuit">
+            <summary>
+            Non-generic interface for the test suit, containing methods independent of the type being tested
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit.GetMock``1">
+            <summary>
+            Gets the mock instance for the type
+            </summary>  
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit.GetSuit``1">
+            <summary>
+            Gets the TestSuit instance for the type
+            </summary>  
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit.GetDependency``1">
+            <summary>
+            Gets the dependency instance
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit.Reset">
+            <summary>
+            Resets all mocks and suits to the clean state and removes all the real instances
+            You could create a new test suit for each test, but using Reset() after (or before) each test
+            is more performant.
+            Becomes meaningful when you have some hundreds of tests 
+            </summary>
+        </member>
+        <member name="T:MoqTestSuit.ITestSuit`1">
+            <summary>
+            Covariant interface of a suit. Can be used to represent TestSuit{Service} as ITestSuit{IService}.
+            </summary>
+        </member>
+        <member name="P:MoqTestSuit.ITestSuit`1.Sut">
+            <summary>
+            Instance of type which is being tested (the root of the dependency tree)
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit`1.SetupMock``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Setup mocks as you usually do in Mock.Of().
+            Can be called several times for the same dependency, which results in applying them to the same object.
+            This is different from the original Moq library API, where this can be done only once on the mock creation.
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit`1.SetupMockAdv``1(System.Action{Moq.Mock{``0}}[])">
+            <summary>
+            Allows some advanced setup of mocks in the test. Also should be used to setup void methods.
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit`1.SetupDependencySuit``1(System.Action{MoqTestSuit.ITestSuit{``0}}[])">
+            <summary>
+            Allows some advanced setup of test suit dependencies in the test
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit`1.SetDependencyToInstance``2(``1)">
+            <summary>
+            Setups a dependency to an instance of a real type
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit`1.SetDependencyToCustomMock``1(Moq.IMock{``0})">
+            <summary>
+            Setups a dependency to an instance of custom mock
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit`1.SetDependencyToLooseMock``1">
+            <summary>
+            Setups a dependency to a loose mock
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit`1.SetDependencyToTestSuit``1(MoqTestSuit.ITestSuit{``0})">
+            <summary>
+            Setups a dependency to be an instance of another suit
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.ITestSuit`1.SetDependencyToTestSuit``2">
+            <summary>
+            Setups a dependency to be an instance of another suit which is created from <typeparamref name="TImpl"/>
+            </summary>
+        </member>
+        <member name="T:MoqTestSuit.TestSuit">
+            <summary>
+            Non-generic base type for the test suit, containing methods independent of the type being tested
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit.Create``1">
+            <summary>
+            
+            </summary>
+            <typeparam name="TSut"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit.GetMock``1">
+            <summary>
+            Gets the mock instance for the type
+            </summary>  
+        </member>
+        <member name="M:MoqTestSuit.TestSuit.GetSuit``1">
+            <summary>
+            Gets the TestSuit instance for the type
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit.GetDependency``1">
+            <summary>
+            Gets the dependency instance
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit.Reset">
+            <summary>
+            Resets all mocks and suits to the clean state and removes all the real instances
+            You could create a new test suit for each test, but using Reset() after (or before) each test
+            is more performant.
+            Becomes meaningful when you have some hundreds of tests 
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuitQueryable`1.CreateMockQuery(Moq.Mock{`0})">
+            <summary>
+                Creates the mock query with the underlying queryable implementation.
+            </summary>
+            <param name="mock"></param>
+        </member>
+        <member name="M:MoqTestSuit.TestSuitQueryable`1.CreateQueryable(Moq.Mock{`0})">
+            <summary>Wraps the enumerator inside a queryable.</summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuitQueryable`1.CreateMocks(Moq.Mock{`0})">
+            <summary>
+                Method that is turned into the actual call from .Query{T}, to
+                transform the queryable query into a normal enumerable query.
+                This method is never used directly by consumers.
+            </summary>
+            <param name="mock"></param>
+        </member>
+        <member name="T:MoqTestSuit.TestSuit`1">
+            <summary>
+            The main type representing the test suit.
+            Contains methods to setup the dependencies and the <see cref="P:MoqTestSuit.TestSuit`1.Sut"/> property
+            to get instance of type to be tested.
+            </summary>
+        </member>
+        <member name="P:MoqTestSuit.TestSuit`1.Sut">
+            <summary>
+            Instance of type which is being tested (the root of the dependency tree)
+            </summary>
+        </member>
+        <member name="P:MoqTestSuit.TestSuit`1.IsSutCreated">
+            <summary>
+            Gets value if Sut was already created
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.SetupMock``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            Setup mocks as you usually do in Mock.Of().
+            Can be called several times for the same dependency, which results in applying them to the same object.
+            This is different from the original Moq library API, where this can be done only once on the mock creation.
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.SetupMockAdv``1(System.Action{Moq.Mock{``0}}[])">
+            <summary>
+            Allows some advanced setup of mocks in the test. Also should be used to setup void methods.
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.SetupDependencySuit``1(System.Action{MoqTestSuit.ITestSuit{``0}}[])">
+            <summary>
+            Allows some advanced setup of test suit dependencies in the test
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.SetDependencyToInstance``2(``1)">
+            <summary>
+            Setups a dependency to an instance of a real type
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.SetDependencyToCustomMock``1(Moq.IMock{``0})">
+            <summary>
+            Setups a dependency to an instance of custom mock
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.SetDependencyToLooseMock``1">
+            <summary>
+            Setups a dependency to a loose mock
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.SetDependencyToTestSuit``1(MoqTestSuit.ITestSuit{``0})">
+            <summary>
+            Setups a dependency to be an instance of another suit
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.SetDependencyToTestSuit``2">
+            <summary>
+            Setups a dependency to be an instance of another suit which is created from <typeparamref name="TImpl"/>
+            </summary>
+        </member>
+        <member name="M:MoqTestSuit.TestSuit`1.Reset">
+            <summary>
+            Resets all mocks and suits to the clean state and removes all the real instances
+            You could create a new test suit for each test, but using Reset() after (or before) each test
+            is more performant.
+            Becomes meaningful when you have some hundreds of tests 
+            </summary>
+        </member>
+    </members>
+</doc>
